@@ -3,678 +3,527 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Happy Chocolate Day</title>
+    <title>A Chocolate Story 🍫</title>
     <style>
-        /* --- Basic Setup --- */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
 
         :root {
             --chocolate-dark: #3D2B1F;
-            --chocolate-light: #4a3424;
+            --chocolate-medium: #523A28;
+            --warm-pink: #ffc1d4;
+            --text-light: #f5f5f5;
             --gold: #FFD700;
-            --pink: #ffc0cb;
-            --warm-bg: #f7e4d5;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #000;
+            background: #111;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        #phone-container {
+        #app-container {
             width: 100vw;
             height: 100vh;
-            max-width: 430px; /* iPhone 14 Pro Max width */
-            max-height: 932px; /* iPhone 14 Pro Max height */
-            background-color: var(--chocolate-dark);
+            max-width: 430px;
+            max-height: 932px;
+            background: var(--chocolate-dark);
             position: relative;
             overflow: hidden;
             cursor: pointer;
-            border-radius: 50px; /* Emulate rounded corners of a phone */
-            border: 10px solid #111;
             box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            transition: background-color 1s ease;
         }
-        
-        /* --- Scene Management --- */
+
         .scene {
             width: 100%;
             height: 100%;
             position: absolute;
             top: 0;
             left: 0;
-            display: none; /* Hidden by default */
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 30px;
-            color: white;
+            color: var(--text-light);
             text-align: center;
-            animation: fadeIn 0.8s ease-in-out;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.05);
+            transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s;
         }
 
         .scene.active {
-            display: flex;
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* --- Scene 0: Loading / Entry --- */
-        #scene-0 {
-            background-color: var(--chocolate-dark);
-        }
-
-        #scene-0 .entry-text {
-            font-size: 24px;
-            animation: fadeIn 2s ease-in-out, subtlePulse 3s infinite ease-in-out;
-        }
-        
-        /* Floating cocoa powder effect */
+        /* --- Scene 0: Entry --- */
         .powder {
             position: absolute;
-            background-color: var(--chocolate-light);
+            background: var(--chocolate-medium);
             border-radius: 50%;
-            opacity: 0.3;
-            animation: float 20s infinite ease-in-out;
+            opacity: 0.4;
+            animation: float 25s infinite ease-in-out;
+            pointer-events: none;
         }
         @keyframes float {
-            0% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-500px) translateX(20px); }
-            100% { transform: translateY(0) translateX(0); }
+            0% { transform: translateY(0vh) translateX(0vw); opacity: 0; }
+            25% { opacity: 0.4; }
+            75% { opacity: 0.4; }
+            100% { transform: translateY(-120vh) translateX(10vw) rotate(360deg); opacity: 0; }
         }
 
-        @keyframes subtlePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+        #entry-text {
+            font-size: 1.5rem;
+            animation: pulse 3s infinite ease-in-out;
         }
-
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
 
         /* --- Scene 1 & 2: Dialogue --- */
-        #scene-1 .chocolate-char, #scene-2 .chocolate-char {
+        .character {
             font-size: 100px;
             position: relative;
         }
         .crown {
             position: absolute;
-            top: -50px;
-            left: 50%;
+            top: -50px; left: 50%;
             transform: translateX(-50%) rotate(-15deg);
             font-size: 50px;
-            animation: popInCrown 0.5s 1s forwards;
+            animation: crown-pop 0.5s 1s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
             opacity: 0;
+            transform-origin: bottom center;
         }
-        @keyframes popInCrown {
+        @keyframes crown-pop {
             from { transform: translateX(-50%) rotate(-15deg) scale(0); opacity: 0; }
             to { transform: translateX(-50%) rotate(-15deg) scale(1); opacity: 1; }
         }
+        #character-1.bounce-in { animation: bounce-in 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards; }
+        @keyframes bounce-in {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
 
-        #scene-1 .dialogue, #scene-2 .dialogue {
-            font-size: 26px;
+        .dialogue-box {
+            font-size: 1.6rem;
             margin-top: 20px;
-            font-weight: bold;
+            font-weight: 500;
             min-height: 150px;
+            line-height: 1.4;
         }
 
-        .shake { animation: shake 0.5s; }
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
-        }
-        .zoom-in { animation: zoomIn 0.5s forwards; }
-        @keyframes zoomIn {
-            to { transform: scale(1.5); }
-        }
-        .walk-off { animation: walkOff 1s forwards ease-in; }
-        @keyframes walkOff {
-            to { transform: translateX(200px) rotate(15deg); opacity: 0; }
-        }
-
-
-        /* --- Scene 3: Whack-A-Chocolate --- */
-        #scene-3 #game-instructions {
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-        }
-
-        #whack-a-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            width: 90%;
-            max-width: 300px;
-        }
-        .hole {
-            width: 80px;
-            height: 80px;
-            background-color: #2e1f14;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);
-        }
-        .hole .whack-chocolate {
-            font-size: 40px;
-            cursor: pointer;
-            position: absolute;
-            bottom: 5px;
-            user-select: none;
-            display: none;
-            animation: popUp 0.3s forwards;
-        }
-        @keyframes popUp {
-            from { transform: translateY(40px) scale(0.5); }
-            to { transform: translateY(0) scale(1); }
-        }
+        /* Dialogue Animations */
+        .shake { animation: shake-anim 0.4s 1; }
+        @keyframes shake-anim { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-3px, 0, 0); } 40%, 60% { transform: translate3d(3px, 0, 0); } }
+        .zoom-dramatic { animation: zoom-dramatic-anim 0.5s forwards; }
+        @keyframes zoom-dramatic-anim { to { transform: scale(1.4); } }
         
-        .whacked {
-            animation: whackedAnim 0.5s forwards;
-        }
-        @keyframes whackedAnim {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.8) rotate(-15deg); }
-            100% { transform: translateY(40px) scale(0.5); }
-        }
+        #character-2.walk-off { animation: walk-off-anim 1s forwards ease-in; }
+        @keyframes walk-off-anim { to { transform: translateX(200px) rotate(25deg); opacity: 0; } }
 
-        #scene-3 #score {
-            font-size: 1.5rem;
-            margin-top: 20px;
-            font-weight: bold;
+        /* --- Scene 3: Game --- */
+        #game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 90%; max-width: 330px; }
+        .hole { width: 90px; height: 90px; background: #2E1F14; border-radius: 50%; box-shadow: inset 0 6px 10px rgba(0,0,0,0.5); position: relative; }
+        .hole .game-chocolate {
+            font-size: 45px; position: absolute; bottom: 5px; left: 50%;
+            transform: translateX(-50%) translateY(50px);
+            user-select: none;
+            visibility: hidden;
+            transition: transform 0.1s;
         }
-        #final-whack-message {
-            font-size: 2rem;
-            display: none; /* Initially hidden */
-        }
+        .hole .game-chocolate.up { animation: popup 0.2s forwards; visibility: visible; }
+        @keyframes popup { to { transform: translateX(-50%) translateY(0); } }
+        .hole .game-chocolate.whacked { animation: whacked-anim 0.3s forwards; }
+        @keyframes whacked-anim { 0% { transform: translateX(-50%) scale(1) rotate(0); } 50% { transform: translateX(-50%) scale(0.8) rotate(-15deg); } 100% { transform: translateX(-50%) translateY(50px) scale(0.5); } }
 
+        #game-instructions { font-size: 1.2rem; margin-bottom: 20px; }
+        #score-display { font-size: 1.5rem; margin-top: 20px; font-weight: bold; }
+        #game-over-message { display: none; font-size: 2.2rem; font-weight: bold; }
 
-        /* --- Scene 4: Drama --- */
-        #scene-4 {
-            background: #111;
-        }
-        .lightning-flash { animation: flash 1.5s infinite 2s; }
-        @keyframes flash {
-            0%, 100% { background: #111; }
-            50% { background: #eee; }
-        }
-        #scene-4 .drama-text {
-            font-size: 2rem;
-            opacity: 0;
-            animation: fadeIn 2s 1s forwards;
-        }
-        /* Rain effect could be added here if desired */
-
-
-        /* --- Scene 5: Reveal --- */
-        #scene-5 {
-            justify-content: flex-end;
-            padding-bottom: 50px;
-        }
-        .reveal-characters {
-            display: flex;
-            gap: 20px;
+        /* --- Scene 4-7: Cinematic --- */
+        #scene-4.flash { animation: flash-anim 0.2s 2 ease-in-out; }
+        @keyframes flash-anim { 50% { background: #eee; } }
+        
+        .drama-text { animation: fade-in-slow 2.5s forwards; opacity: 0; font-size: 1.8rem; margin: 10px 0;}
+        .drama-text:nth-child(2) { animation-delay: 2s; }
+        @keyframes fade-in-slow { to { opacity: 1; } }
+        
+        .reveal-container {
             font-size: 5rem;
-            animation: walkForward 4s ease-out forwards;
+            animation: walk-forward 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            opacity: 0;
+            display: flex;
+            align-items: flex-end;
+            gap: 15px;
         }
-        @keyframes walkForward {
-            from { transform: scale(0.5) translateY(200px); opacity: 0; }
+        .reveal-container span:first-child { font-size: 6rem; } /* Make Swikar emoji bigger */
+        @keyframes walk-forward {
+            from { transform: scale(0.4) translateY(150px); opacity: 0; }
             to { transform: scale(1) translateY(0); opacity: 1; }
         }
-        .reveal-dialogue {
-            margin-top: 20px;
-            opacity: 0;
-            animation: fadeIn 2s 4s forwards;
-        }
-        .reveal-dialogue p { margin: 5px 0; font-size: 1.2rem; }
         
+        .cinematic-dialogue { opacity: 0; animation: fade-in-slow 1.5s 4.5s forwards; margin-top: 20px; }
+        .cinematic-dialogue p { margin: 5px 0; font-size: 1.2rem; line-height: 1.5; }
         
-        /* --- Scene 6 & 7: Throne & Melt --- */
-        #scene-6, #scene-7 {
-            transition: background-color 2s;
-        }
-        .chocolate-melt-container {
-            font-size: 8rem;
-            position: relative;
-        }
-        .chocolate-melt-container .crown {
-            font-size: 4rem;
-            animation: crownDrop 2s forwards ease-in-out;
-        }
-        @keyframes crownDrop {
-            0% { transform: translateY(-80px) translateX(-50%) rotate(-15deg) scale(1); opacity: 1; }
-            100% { transform: translateY(40px) translateX(-50%) rotate(45deg) scale(0.8); opacity: 0; }
-        }
-        .melt-dialogue {
-            font-size: 1.5rem;
-            opacity: 0;
-            animation: fadeIn 2s forwards;
-        }
-        .final-chocolate, .final-heart {
-            transition: transform 1.5s, opacity 1.5s;
-        }
-        .final-heart {
-            position: absolute;
-            top: 0; left: 0;
-            opacity: 0;
-            transform: scale(0);
+        .throne-character { font-size: 8rem; position: relative; }
+        .throne-character .crown { animation: crown-drop 2.5s forwards 1s cubic-bezier(0.6, -0.28, 0.74, 0.05); }
+        @keyframes crown-drop {
+            0% { top: -60px; transform: translateX(-50%) rotate(-15deg); opacity: 1; }
+            100% { top: 50px; transform: translateX(-50%) rotate(720deg) scale(0.2); opacity: 0; }
         }
 
+        .final-chocolate { font-size: 8rem; position: relative; }
+        #melt-heart {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; transform: scale(0.5);
+            transition: opacity 1.5s 1.5s ease, transform 1.5s 1.5s ease;
+        }
+        #melt-chocolate { transition: opacity 1s 0.5s ease, transform 1s 0.5s ease; }
+        .is-melting #melt-chocolate { opacity: 0; transform: scale(0.8) rotate(-15deg); }
+        .is-melting #melt-heart { opacity: 1; transform: scale(1.1); }
         
         /* --- Scene 8: Final Message --- */
-        #scene-8 {
-            background-color: var(--pink);
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        #scene-8 p {
-            margin: 5px 0;
-            font-size: 1.8rem;
-        }
-        #scene-8 .final-greeting {
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
+        .final-text { animation: fade-in-slow 2s forwards; }
+        .final-text h1 { font-size: 2.2rem; margin-bottom: 20px; }
+        .final-text p { font-size: 1.7rem; line-height: 1.6; margin: 2px 0; }
 
-        /* Floating Hearts */
-        .heart {
+        .heart-particle {
             position: absolute;
             font-size: 1.5rem;
-            animation: floatUp 10s infinite linear;
+            animation: float-up 10s infinite linear;
+            pointer-events: none;
+            will-change: transform, opacity;
         }
-        @keyframes floatUp {
-            from { transform: translateY(100vh) scale(1); opacity: 0.7; }
-            to { transform: translateY(-100px) scale(1.5); opacity: 0; }
+        @keyframes float-up {
+            from { transform: translateY(0vh) translateX(0vw) scale(1); opacity: 0.8; }
+            to { transform: translateY(-120vh) translateX(5vw) scale(1.5); opacity: 0; }
         }
-
     </style>
 </head>
 <body>
 
-    <div id="phone-container">
+    <div id="app-container">
 
-        <!-- Scene 0: Loading / Entry -->
+        <!-- SCENE 0: LOADING / ENTRY -->
         <div id="scene-0" class="scene active">
-            <div class="powder" style="width: 15px; height: 15px; top: 20%; left: 10%; animation-delay: 0s;"></div>
-            <div class="powder" style="width: 10px; height: 10px; top: 50%; left: 80%; animation-delay: 2s;"></div>
-            <div class="powder" style="width: 20px; height: 20px; top: 80%; left: 30%; animation-delay: 4s;"></div>
-            <p class="entry-text">Tap to enter… if you dare. 😏🍫</p>
+            <p id="entry-text">Tap to enter… if you dare. 😏🍫</p>
         </div>
 
-        <!-- Scene 1: Arrogant Chocolate -->
+        <!-- SCENE 1: THE ARROGANT CHOCOLATE ARRIVES -->
         <div id="scene-1" class="scene">
-            <div class="chocolate-char">
-                <div class="crown">👑</div>
-                🍫
-            </div>
-            <div class="dialogue" id="dialogue-1"></div>
+            <div id="character-1" class="character"><div class="crown">👑</div>🍫</div>
+            <div id="dialogue-1" class="dialogue-box"></div>
         </div>
         
-        <!-- Scene 2: Trash Talk -->
+        <!-- SCENE 2: HE TRASH TALKS YOU -->
         <div id="scene-2" class="scene">
-            <div class="chocolate-char" id="chocolate-char-2">
-                🍫
-            </div>
-            <div class="dialogue" id="dialogue-2"></div>
+            <div id="character-2" class="character">🍫</div>
+            <div id="dialogue-2" class="dialogue-box"></div>
         </div>
 
-        <!-- Scene 3: Whack-a-Chocolate -->
+        <!-- SCENE 3: WHACK-A-CHOCOLATE GAME -->
         <div id="scene-3" class="scene">
-            <div id="game-instructions">Teach him a lesson. Tap the chocolate. 👊🍫</div>
-            <div id="whack-a-grid">
-                <!-- Holes are generated by JS -->
-            </div>
-            <div id="score">Hits: 0/5</div>
-            <div id="final-whack-message">OKAY OKAY STOPPP 😵</div>
+            <p id="game-instructions">Teach him a lesson. Tap the chocolate. 👊🍫</p>
+            <div id="game-grid"></div>
+            <p id="score-display">Hits: 0/5</p>
+            <p id="game-over-message">OKAY OKAY STOPPP 😵</p>
         </div>
 
-        <!-- Scene 4: Drama -->
+        <!-- SCENE 4: CHAOS & DRAMA -->
         <div id="scene-4" class="scene">
-            <div id="lightning" class="">
-                 <p class="drama-text" id="drama-text-1">Sometimes...</p>
-                 <p class="drama-text" id="drama-text-2">Even the proudest melt.</p>
-            </div>
+            <p class="drama-text">Sometimes…</p>
+            <p class="drama-text">Even the proudest melt.</p>
         </div>
-
-        <!-- Scene 5: Cinematic Reveal -->
+        
+        <!-- SCENE 5: CINEMATIC REVEAL -->
         <div id="scene-5" class="scene">
-             <div class="reveal-characters">
-                <span>😎<br/><span style="font-size:1rem;">Swikar</span></span>
+            <div class="reveal-container">
+                <span>😎<br/><p style="font-size:1.2rem; margin-top:-10px;">Swikar</p></span>
                 <span>🍫</span>
-             </div>
-             <div class="reveal-dialogue">
-                <!-- Dialogue generated by JS -->
-             </div>
+            </div>
+            <div id="dialogue-5" class="cinematic-dialogue"></div>
         </div>
         
-        <!-- Scene 6: The Throne is Given Up -->
+        <!-- SCENE 6: THE THRONE IS GIVEN UP -->
         <div id="scene-6" class="scene">
-            <div class="chocolate-melt-container">
-                <div class="crown">👑</div>
-                🍫
-            </div>
-            <div class="melt-dialogue">
-                <!-- Dialogue generated by JS -->
+            <div class="throne-character"><div class="crown">👑</div>🍫</div>
+            <div id="dialogue-6" class="dialogue-box"></div>
+        </div>
+        
+        <!-- SCENE 7: THE MELT -->
+        <div id="scene-7" class="scene">
+             <div id="chocolate-melt-container" class="final-chocolate">
+                 <span id="melt-chocolate">🍫</span>
+                 <span id="melt-heart">❤️</span>
+             </div>
+             <div id="dialogue-7" class="dialogue-box" style="opacity:0; animation: fade-in-slow 1s 3s forwards;"></div>
+        </div>
+        
+        <!-- SCENE 8: FINAL LOVE MESSAGE -->
+        <div id="scene-8" class="scene">
+            <div class="final-text">
+                <h1>Happy Chocolate Day 🍫❤️</h1>
+                <p>To the most amazing,</p>
+                <p>sweetest,</p>
+                <p>adorable,</p>
+                <p>cutest,</p>
+                <p>my chocolate,</p>
+                <p>my everything.</p>
+                <br>
+                <p><b>Happy Chocolate Day, my love. 💕</b></p>
             </div>
         </div>
 
-        <!-- Scene 7: The Melt -->
-        <div id="scene-7" class="scene">
-             <div class="chocolate-melt-container">
-                 <span class="final-chocolate">🍫</span>
-                 <span class="final-heart">❤️</span>
-             </div>
-             <div class="melt-dialogue" style="animation-delay: 2s;">
-                <p>Happy Chocolate Day…</p>
-                <p>My Queen. 👑🍫</p>
-            </div>
-        </div>
-        
-        <!-- Scene 8: Final Message -->
-        <div id="scene-8" class="scene">
-            <!-- Heart particles will be generated by JS -->
-            <p class="final-greeting">Happy Chocolate Day 🍫❤️</p>
-            <p>To the most amazing,</p>
-            <p>sweetest,</p>
-            <p>adorable,</p>
-            <p>cutest,</p>
-            <p>my chocolate,</p>
-            <p>my everything.</p>
-            <br/>
-            <p><b>Happy Chocolate Day, my love. 💕</b></p>
-        </div>
     </div>
 
     <script>
         const scenes = document.querySelectorAll('.scene');
+        const appContainer = document.getElementById('app-container');
         let currentScene = 0;
+
+        const el = (id) => document.getElementById(id);
 
         function showScene(sceneIndex) {
             scenes[currentScene].classList.remove('active');
             currentScene = sceneIndex;
-            scenes[currentScene].classList.add('active');
-            // Trigger the logic for the new scene
+            const newScene = scenes[currentScene];
+            newScene.classList.add('active');
+
+            // Apply specific background colors for scenes
+            if (currentScene === 4) {
+                appContainer.style.backgroundColor = '#1a1a1a';
+            } else if (currentScene >= 7) {
+                appContainer.style.backgroundColor = 'var(--warm-pink)';
+            } else {
+                appContainer.style.backgroundColor = 'var(--chocolate-dark)';
+            }
+            
             runSceneLogic(currentScene);
         }
 
-        // --- Typing Effect ---
-        function typeWriter(element, text, speed, callback) {
+        // --- DIALOGUE & TYPING ---
+        function typeWriter(element, text, speed, onComplete) {
             let i = 0;
             element.innerHTML = "";
-            function type() {
+            const typing = () => {
                 if (i < text.length) {
                     element.innerHTML += text.charAt(i);
                     i++;
-                    setTimeout(type, speed);
-                } else if (callback) {
-                    callback();
+                    setTimeout(typing, speed);
+                } else if (onComplete) {
+                    setTimeout(onComplete, 500);
                 }
-            }
-            type();
+            };
+            typing();
         }
 
-        // --- Dialogue Manager ---
-        function playDialogue(container, character, dialogues, onComplete) {
+        function dialogueManager(sceneId, character, dialogueArray) {
             let dialogueIndex = 0;
-            
-            function nextDialogue() {
-                if (dialogueIndex < dialogues.length) {
-                    const line = dialogues[dialogueIndex];
-                    const element = document.getElementById(container);
-                    if (character) {
-                        character.classList.remove('shake', 'zoom-in');
+            const sceneElement = el(`scene-${sceneId}`);
+            const dialogueBox = el(`dialogue-${sceneId}`);
+
+            const nextDialogue = () => {
+                sceneElement.removeEventListener('click', nextDialogue); // Prevent multiple clicks
+                if (dialogueIndex < dialogueArray.length) {
+                    const line = dialogueArray[dialogueIndex];
+                    if(character) {
+                        character.className = "character"; // Reset animations
+                        if (line.anim) character.classList.add(line.anim);
                     }
-                    if(line.anim === 'shake') character.classList.add('shake');
-                    if(line.anim === 'zoom') character.classList.add('zoom-in');
-                    
-                    typeWriter(element, line.text, 50, () => {
-                        // Pause for a bit after typing before allowing next tap
-                        setTimeout(() => { 
-                             dialogueIndex++;
-                        }, 500);
+                    typeWriter(dialogueBox, line.text, 50, () => {
+                         dialogueIndex++;
+                         if(dialogueIndex < dialogueArray.length) {
+                             sceneElement.addEventListener('click', nextDialogue);
+                         } else {
+                             line.onComplete(); // Call the final callback
+                         }
                     });
-                } else {
-                    document.getElementById('scene-' + currentScene).removeEventListener('click', nextDialogue);
-                    onComplete();
                 }
-            }
+            };
             
-            document.getElementById('scene-' + currentScene).addEventListener('click', nextDialogue);
-            nextDialogue(); // Start the first line
+            nextDialogue();
         }
 
-        // --- Scene-Specific Logic ---
-        function runSceneLogic(sceneIndex) {
-            switch(sceneIndex) {
-                case 0:
-                    // Scene 0: Entry
-                    scenes[0].addEventListener('click', () => showScene(1), { once: true });
+        // --- SCENE LOGIC CONTROLLER ---
+        function runSceneLogic(index) {
+            switch(index) {
+                case 0: // Entry
+                    createParticles(el('scene-0'), 'powder', 5);
+                    el('scene-0').onclick = () => showScene(1);
                     break;
-                
-                case 1:
-                    // Scene 1: Dialogue
-                    const dialogues1 = [
+                case 1: // Arrogant Chocolate
+                    const character1 = el('character-1');
+                    character1.classList.add('bounce-in');
+                    dialogueManager(1, character1, [
                         { text: "Ohhh… so YOU must be her. 😏" },
                         { text: "I’ve heard a LOT about you." },
                         { text: "What was that guy’s name again…?" },
                         { text: "…Ahhh. Swikar. 😎" },
                         { text: "That guy is OBSESSED with you." },
                         { text: "Gentle this… sweet that… amazing blah blah blah 🙄", anim: 'shake'},
-                        { text: "But let me make one thing VERY clear.", anim: 'zoom'},
+                        { text: "But let me make one thing VERY clear.", anim: 'zoom-dramatic'},
                         { text: "I’m sweeter than you." },
                         { text: "I’m more loved than you." },
                         { text: "I’m adored by the ENTIRE WORLD. 🌍🍫" },
                         { text: "People don’t choose chocolate." },
-                        { text: "Chocolate chooses THEM." }
-                    ];
-                    playDialogue('dialogue-1', document.querySelector('#scene-1 .chocolate-char'), dialogues1, () => {
-                       setTimeout(() => showScene(2), 1000);
-                    });
+                        { text: "Chocolate chooses THEM.", onComplete: () => setTimeout(() => showScene(2), 1000) }
+                    ]);
                     break;
-
-                case 2:
-                    // Scene 2: Trash talk
-                    const char2 = document.getElementById('chocolate-char-2');
-                    const dialogues2 = [
-                        { text: "And that Swikar guy?" },
-                        { text: "Pfft. Emotional. Dramatic." },
-                        { text: "Acts tough but melts faster than me. 😌" },
-                        { text: "You deserve better." },
-                        { text: "Like… ME." },
-                        { text: "Anyway. I’m bored." },
-                        { text: "Try to keep up. 😏" }
-                    ];
-                    playDialogue('dialogue-2', char2, dialogues2, () => {
-                       char2.classList.add('walk-off');
-                       setTimeout(() => {
-                           document.getElementById('phone-container').style.backgroundColor = 'black';
-                           showScene(3);
-                       }, 1000);
-                    });
+                case 2: // Trash Talk
+                    const character2 = el('character-2');
+                    dialogueManager(2, character2, [
+                         { text: "And that Swikar guy?" },
+                         { text: "Pfft. Emotional. Dramatic." },
+                         { text: "Acts tough but melts faster than me. 😌" },
+                         { text: "You deserve better... Like ME." },
+                         { text: "Anyway. I’m bored." },
+                         { text: "Try to keep up. 😏", onComplete: () => {
+                            character2.classList.add('walk-off');
+                            setTimeout(() => showScene(3), 1200);
+                         } }
+                    ]);
                     break;
-
-                case 3:
-                    // Scene 3: Game
-                    document.getElementById('phone-container').style.backgroundColor = 'var(--chocolate-dark)';
-                    const grid = document.getElementById('whack-a-grid');
-                    const scoreDisplay = document.getElementById('score');
-                    let score = 0;
-                    let speed = 1000;
-                    let gameTimeout;
-
-                    grid.innerHTML = ''; // Clear previous grid
-                    for(let i=0; i<9; i++){
-                        const hole = document.createElement('div');
-                        hole.classList.add('hole');
-                        const chocolate = document.createElement('span');
-                        chocolate.classList.add('whack-chocolate');
-                        chocolate.textContent = '🍫';
-                        chocolate.addEventListener('click', () => {
-                            if (!chocolate.classList.contains('whacked')) {
-                                score++;
-                                speed = Math.max(200, speed - 150);
-                                scoreDisplay.textContent = `Hits: ${score}/5`;
-                                chocolate.textContent = '😵‍💫';
-                                chocolate.classList.add('whacked');
-                                clearTimeout(gameTimeout);
-                                if (score < 5) {
-                                    setTimeout(popChocolate, 300);
-                                } else {
-                                    endGame();
-                                }
-                            }
-                        });
-                        hole.appendChild(chocolate);
-                        grid.appendChild(hole);
-                    }
-                    
-                    const holes = document.querySelectorAll('.hole .whack-chocolate');
-                    
-                    function popChocolate() {
-                        holes.forEach(c => {
-                            c.style.display = 'none';
-                            c.textContent = '🍫';
-                            c.classList.remove('whacked');
-                        });
-                        const randomIndex = Math.floor(Math.random() * holes.length);
-                        const activeChocolate = holes[randomIndex];
-                        activeChocolate.style.display = 'block';
-
-                        gameTimeout = setTimeout(() => {
-                            if (!activeChocolate.classList.contains('whacked')) {
-                                activeChocolate.style.display = 'none';
-                                popChocolate();
-                            }
-                        }, speed);
-                    }
-                    
-                    function endGame(){
-                        scoreDisplay.style.display = 'none';
-                        grid.style.display = 'none';
-                        document.getElementById('game-instructions').style.display = 'none';
-                        const finalMsg = document.getElementById('final-whack-message');
-                        finalMsg.style.display = 'block';
-                        setTimeout(() => showScene(4), 2500);
-                    }
-                    
-                    popChocolate();
+                case 3: // Whack-a-Chocolate Game
+                    runGame();
                     break;
-
-                case 4:
-                     // Scene 4: Drama
-                    const lightning = document.getElementById('lightning');
-                    setTimeout(() => lightning.classList.add('lightning-flash'), 1000);
-                    setTimeout(() => {
-                        document.getElementById('drama-text-1').style.opacity = '1';
-                    }, 2000);
-                    setTimeout(() => {
-                         document.getElementById('drama-text-2').style.opacity = '1';
-                    }, 4000);
-                    setTimeout(() => showScene(5), 7000);
+                case 4: // Drama
+                    setTimeout(() => el('scene-4').classList.add('flash'), 2500);
+                    setTimeout(() => showScene(5), 6000);
                     break;
-                
-                case 5:
-                    // Scene 5: Reveal
-                    const revealDialogue = document.querySelector('.reveal-dialogue');
-                    const lines = [
-                        "“I was wrong.”",
-                        "“I thought I was the sweetest thing in this world…”",
-                        "“But then I saw her.”",
-                        "“Her kindness.”",
-                        "“Her warmth.”",
-                        "“Her heart.”",
-                        "“She doesn’t need chocolate to be sweet.” 🥹"
+                case 5: // Reveal
+                    const dialogue5Box = el('dialogue-5');
+                    const revealLines = [
+                        "“I was wrong.”", "“I thought I was the sweetest thing in this world…”", "“But then I saw her.”",
+                        "“Her kindness.”", "“Her warmth.”", "“Her heart.”", "“She doesn’t need chocolate to be sweet.” 🥹"
                     ];
                     let lineIdx = 0;
-                    function showNextLine() {
-                        if (lineIdx < lines.length) {
+                    function showNextRevealLine() {
+                        if(lineIdx < revealLines.length) {
                             const p = document.createElement('p');
-                            p.style.opacity = '0';
-                            p.innerHTML = lines[lineIdx];
-                            revealDialogue.appendChild(p);
-                            setTimeout(() => p.style.opacity = '1', 100);
-                            lineIdx++;
-                            setTimeout(showNextLine, 1500);
+                            p.innerHTML = revealLines[lineIdx++];
+                            dialogue5Box.appendChild(p);
+                            setTimeout(showNextRevealLine, 1800);
                         } else {
                             setTimeout(() => showScene(6), 2000);
                         }
                     }
-                    setTimeout(showNextLine, 4500); // Start after character walk animation
+                    setTimeout(showNextRevealLine, 5000);
                     break;
-
-                case 6:
-                    // Scene 6: Throne
-                    const throneDialogue = document.querySelector('#scene-6 .melt-dialogue');
-                    throneDialogue.innerHTML = '';
-                    const throneLines = [
-                        "I step down.",
-                        "The throne belongs to...",
-                        "...The most adorable, loving, beautiful soul.",
-                        "You."
-                    ];
-                    let throneLineIdx = 0;
-                    function showThroneLine() {
-                        if(throneLineIdx < throneLines.length) {
-                            typeWriter(throneDialogue, throneLines[throneLineIdx], 60, () => {
-                                throneLineIdx++;
-                                setTimeout(showThroneLine, 1500);
-                            });
-                        } else {
-                            setTimeout(() => showScene(7), 2000);
-                        }
-                    }
-                    setTimeout(showThroneLine, 2500); // Wait for crown to drop
+                case 6: // Throne Given Up
+                    dialogueManager(6, null, [
+                         { text: "I step down.", onComplete: () => {}},
+                         { text: "The throne belongs to...", onComplete: () => {}},
+                         { text: "The most adorable, loving, beautiful soul.", onComplete: () => {}},
+                         { text: "You.", onComplete: () => setTimeout(() => showScene(7), 2000) }
+                    ]);
                     break;
-
-                case 7:
-                    // Scene 7: Melt
-                    const container = document.getElementById('phone-container');
-                    container.style.backgroundColor = 'var(--warm-bg)';
-                    setTimeout(() => {
-                        const finalChoc = document.querySelector('.final-chocolate');
-                        const finalHeart = document.querySelector('.final-heart');
-                        finalChoc.style.opacity = '0';
-                        finalChoc.style.transform = 'scale(0.5)';
-                        finalHeart.style.opacity = '1';
-                        finalHeart.style.transform = 'scale(1.2)';
-                    }, 1000);
-                    setTimeout(() => showScene(8), 6000);
+                case 7: // Melt
+                    el('chocolate-melt-container').classList.add('is-melting');
+                    typeWriter(el('dialogue-7'), "Happy Chocolate Day…<br>My Queen. 👑🍫", 70, () => {
+                        setTimeout(() => showScene(8), 2500);
+                    });
                     break;
-
-                case 8:
-                    // Scene 8: Final Message
-                    const finalScene = document.getElementById('scene-8');
-                    for (let i = 0; i < 20; i++) {
-                        const heart = document.createElement('div');
-                        heart.classList.add('heart');
-                        heart.textContent = '❤️';
-                        heart.style.left = `${Math.random() * 100}vw`;
-                        heart.style.animationDelay = `${Math.random() * 10}s`;
-                        heart.style.fontSize = `${Math.random() * 1 + 0.5}rem`;
-                        finalScene.appendChild(heart);
-                    }
+                case 8: // Final Message
+                    createParticles(el('app-container'), 'heart', 20);
                     break;
             }
         }
+        
+        // --- GAME LOGIC ---
+        function runGame() {
+            const grid = el('game-grid');
+            const scoreDisplay = el('score-display');
+            grid.innerHTML = '';
+            let score = 0;
+            let speed = 1000;
+            let currentTimeout;
+            
+            for(let i=0; i<9; i++){
+                grid.innerHTML += `<div class="hole"><span class="game-chocolate">🍫</span></div>`;
+            }
 
-        // Initialize the first scene
-        runSceneLogic(0);
+            const chocolates = document.querySelectorAll('.game-chocolate');
+
+            chocolates.forEach(choc => {
+                choc.addEventListener('mousedown', () => { // mousedown feels faster
+                    if(choc.classList.contains('up') && !choc.classList.contains('whacked')) {
+                        score++;
+                        scoreDisplay.textContent = `Hits: ${score}/5`;
+                        speed = Math.max(250, speed - 125);
+                        
+                        choc.classList.add('whacked');
+                        choc.textContent = '😵‍💫';
+                        clearTimeout(currentTimeout);
+
+                        if (score >= 5) {
+                            endGame();
+                        } else {
+                            setTimeout(popChocolate, 400);
+                        }
+                    }
+                });
+            });
+
+            function popChocolate() {
+                chocolates.forEach(c => {
+                    c.classList.remove('up', 'whacked');
+                    c.textContent = '🍫';
+                });
+                const randomIndex = Math.floor(Math.random() * chocolates.length);
+                const activeChoc = chocolates[randomIndex];
+                activeChoc.classList.add('up');
+                
+                currentTimeout = setTimeout(() => {
+                    activeChoc.classList.remove('up');
+                    popChocolate();
+                }, speed);
+            }
+            
+            function endGame() {
+                chocolates.forEach(c => c.classList.remove('up'));
+                el('game-grid').style.display = 'none';
+                el('game-instructions').style.display = 'none';
+                scoreDisplay.style.display = 'none';
+                el('game-over-message').style.display = 'block';
+                setTimeout(() => showScene(4), 2500);
+            }
+
+            popChocolate();
+        }
+        
+        // --- PARTICLE EFFECT ---
+        function createParticles(container, type, count) {
+            for(let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                if (type === 'powder') {
+                    p.classList.add('powder');
+                    p.style.width = p.style.height = `${Math.random() * 15 + 5}px`;
+                    p.style.animationDelay = `${Math.random() * 25}s`;
+                } else { // Heart
+                    p.classList.add('heart-particle');
+                    p.innerHTML = '❤️';
+                    p.style.fontSize = `${Math.random() * 1.5 + 0.8}rem`;
+                    p.style.animationDelay = `${Math.random() * 10}s`;
+                }
+                p.style.left = `${Math.random() * 100}vw`;
+                container.appendChild(p);
+            }
+        }
+        
+        // --- INITIALIZE ---
+        showScene(0);
 
     </script>
+
 </body>
 </html>
