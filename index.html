@@ -375,18 +375,18 @@
                         { text: "I’m sweeter than you." },
                         { text: "I’m more loved than you." },
                         { text: "I’m adored by the ENTIRE WORLD. 🌍🍫" },
-                        { text: "People don’t choose chocolate." },
-                        { text: "Chocolate chooses THEM.", onComplete: () => setTimeout(() => showScene(2), 1000) }
+                        { text: "I have the real crown. 😏" },
+                        { text: "YOU Better Know that. . . 🙄", onComplete: () => setTimeout(() => showScene(2), 1000) }
                     ]);
                     break;
                 case 2: // Trash Talk
                     const character2 = el('character-2');
                     dialogueManager(2, character2, [
-                         { text: "And that Swikar guy?" },
+                         { text: "That Swikar guy. . . . ." },
                          { text: "Pfft. Emotional. Dramatic." },
                          { text: "Acts tough but melts faster than me. 😌" },
-                         { text: "She's the best in the world, blah, blah 😏" },
-                         { text: "I am the best." },
+                         { text: "“She's the best in the world”, blah, blah 😏" },
+                         { text: "NO YOU ARE NOT. I am the best." },
                          { text: "I am the SWEETEST 🍫. not YOU Miss AK. 😏", onComplete: () => {
                             character2.classList.add('walk-off');
                             setTimeout(() => showScene(3), 1200);
@@ -422,9 +422,9 @@
                 case 6: // Throne Given Up
                     dialogueManager(6, null, [
                          { text: "I step down.", onComplete: () => {}},
-                         { text: "The throne belongs to...", onComplete: () => {}},
+                         { text: "The throne and the crown belongs to...", onComplete: () => {}},
                          { text: "The most adorable, loving, beautiful soul. YOU ❤️", onComplete: () => {}},
-                         { text: "YOU ❤️ ❤️ ❤️ 🫡", onComplete: () => setTimeout(() => showScene(7), 2000) }
+                         { text: "YOU ❤️ ❤️ ❤️ 🫡 👸🏻", onComplete: () => setTimeout(() => showScene(7), 2000) }
                     ]);
                     break;
                 case 7: // Melt
