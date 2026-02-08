@@ -2,39 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Happy Chocolate Day 🍫</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Happy Chocolate Day 🍫❤️</title>
 
 <style>
 :root {
-  --choco-dark: #2b1a14;
-  --choco-mid: #4b2e24;
-  --gold: #d4af37;
-  --pink: #ffb6c1;
+  --bg-dark: radial-gradient(circle at top, #3b1f14, #140a06);
+  --bg-warm: radial-gradient(circle at center, #5a2a1a, #f2b6c6);
 }
 
-* {
-  box-sizing: border-box;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
+* { box-sizing: border-box; }
 
-html, body {
+body {
   margin: 0;
-  padding: 0;
-  height: 100%;
-  background: var(--choco-dark);
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: "Georgia", serif;
+  background: #140a06;
+  color: #ffe6ee;
   overflow: hidden;
+  touch-action: manipulation;
 }
 
-#app {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-/* GENERAL */
 .scene {
   position: absolute;
   inset: 0;
@@ -42,322 +29,362 @@ html, body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  text-align: center;
   padding: 24px;
+  text-align: center;
 }
 
-.scene.active {
-  display: flex;
-}
+.scene.active { display: flex; }
 
 .text {
-  font-size: 1.6rem;
-  color: #fff;
-  line-height: 1.4;
-  margin-top: 16px;
-}
-
-.big {
-  font-size: 3.2rem;
-}
-
-.fade {
+  font-size: 1.4rem;
+  max-width: 90%;
+  line-height: 1.6;
+  opacity: 0;
   animation: fadeIn 0.8s ease forwards;
 }
 
+.big { font-size: 4.8rem; }
+
+.fade { animation: fadeIn 0.8s ease forwards; }
+
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ENTRY */
-#scene0 {
-  background: radial-gradient(circle at top, #3b2318, var(--choco-dark));
-}
-
-.cocoa {
+/* Cocoa dust */
+.cocoa::before {
+  content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 20px 20px;
-  animation: float 8s linear infinite;
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 18px 18px;
+  animation: drift 12s linear infinite;
+  opacity: 0.3;
 }
-
-@keyframes float {
+@keyframes drift {
   from { background-position: 0 0; }
-  to { background-position: 40px 80px; }
+  to { background-position: 200px 400px; }
 }
 
-/* CHOCOLATE CHARACTER */
+/* Chocolate + Crown */
+.choco-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
 .choco {
   font-size: 5rem;
-  animation: bounce 1.2s cubic-bezier(.34,1.56,.64,1);
+  animation: bounceIn 0.8s cubic-bezier(.34,1.56,.64,1);
 }
 
-@keyframes bounce {
-  0% { transform: translateY(-200px) scale(0.8); }
-  60% { transform: translateY(20px) scale(1.05); }
-  100% { transform: translateY(0) scale(1); }
+@keyframes bounceIn {
+  0% { transform: scale(0.2); }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 .crown {
-  font-size: 2.5rem;
   position: absolute;
-  top: 18%;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.4rem;
   animation: glow 1s ease-in-out;
 }
 
 @keyframes glow {
-  0% { opacity: 0; transform: scale(0.6); }
-  100% { opacity: 1; transform: scale(1); }
+  0% { filter: drop-shadow(0 0 0px gold); }
+  100% { filter: drop-shadow(0 0 12px gold); }
 }
 
-/* MOCK SHAKE */
-.shake {
-  animation: shake 0.4s ease;
+/* Expressions */
+.eye-roll { animation: eyeRoll 0.6s ease; }
+@keyframes eyeRoll {
+  0% { transform: rotate(0); }
+  50% { transform: rotate(-12deg); }
+  100% { transform: rotate(0); }
 }
 
-@keyframes shake {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(2deg); }
-  50% { transform: rotate(-2deg); }
-  75% { transform: rotate(1deg); }
-  100% { transform: rotate(0deg); }
-}
-
-/* WHACK GAME */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 90px);
-  grid-gap: 16px;
-  margin-top: 24px;
-}
-
-.hole {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: #3a2218;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hit {
-  animation: hit 0.2s ease;
-}
-
-@keyframes hit {
+.smirk { animation: smirk 0.6s ease; }
+@keyframes smirk {
   0% { transform: scale(1); }
-  50% { transform: scale(0.85); }
+  50% { transform: scale(1.1) rotate(5deg); }
   100% { transform: scale(1); }
 }
 
-/* DRAMA */
-#scene4 {
-  background: linear-gradient(#0f0f0f, #1a0f0a);
+.shake { animation: shake 0.3s; }
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
 }
 
-.rain {
+/* Game */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  gap: 14px;
+}
+
+.hole {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #2a140c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+/* Rain + lightning */
+.rain::before {
+  content: "";
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
-  background-size: 2px 18px;
-  animation: rain 0.5s linear infinite;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.15),
+    rgba(255,255,255,0.15) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  animation: rain 0.6s linear infinite;
+  opacity: 0.25;
 }
-
 @keyframes rain {
   from { background-position: 0 0; }
-  to { background-position: 0 18px; }
+  to { background-position: 0 40px; }
 }
 
-/* WALK-IN */
-.walk {
-  font-size: 4rem;
-  animation: walkIn 3s ease forwards;
-}
-
-@keyframes walkIn {
-  from { transform: scale(0.4); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-/* MELT */
-.melt {
-  animation: melt 3s ease forwards;
-}
-
-@keyframes melt {
-  0% { transform: scale(1); }
-  100% { transform: scale(0); opacity: 0; }
-}
-
-/* HEART CONFETTI */
+/* Confetti */
 .confetti span {
   position: absolute;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   animation: fall 3s linear forwards;
 }
-
 @keyframes fall {
-  from { transform: translateY(-50px); opacity: 1; }
-  to { transform: translateY(120vh); opacity: 0; }
-}
-
-/* FINAL */
-#scene8 {
-  background: radial-gradient(circle, #ffccd5, #ff8fab);
-  color: #4b2e24;
-  overflow-y: auto;
-}
-
-.typing {
-  font-size: 2rem;
-  white-space: nowrap;
-  border-right: 2px solid;
-  animation: blink 0.8s step-end infinite;
-}
-
-@keyframes blink {
-  50% { border-color: transparent; }
+  from { transform: translateY(-100px) rotate(0); }
+  to { transform: translateY(120vh) rotate(360deg); }
 }
 </style>
 </head>
 
 <body>
-<div id="app">
 
 <!-- SCENE 0 -->
-<div id="scene0" class="scene active">
-  <div class="cocoa"></div>
-  <div class="text fade">Tap to enter…<br>🍫</div>
+<div class="scene active cocoa" id="scene0">
+  <div id="entryText" class="text"></div>
 </div>
 
 <!-- SCENE 1 -->
-<div id="scene1" class="scene">
-  <div class="choco">🍫</div>
-  <div class="crown">👑</div>
+<div class="scene" id="scene1" style="background:var(--bg-dark)">
+  <div class="choco-wrapper">
+    <div class="crown">👑</div>
+    <div id="choco1" class="choco">🍫</div>
+  </div>
   <div id="dialogue1" class="text"></div>
 </div>
 
-<!-- SCENE 3 GAME -->
-<div id="scene3" class="scene">
-  <div class="text">Teach him a lesson.<br>Tap the chocolate 👊🍫</div>
-  <div id="hits" class="text">Hits: 0/5</div>
+<!-- SCENE 2 -->
+<div class="scene" id="scene2" style="background:#1a0d08">
+  <div class="choco-wrapper">
+    <div id="choco2" class="choco">🍫</div>
+  </div>
+  <div id="dialogue2" class="text"></div>
+</div>
+
+<!-- SCENE 3 -->
+<div class="scene" id="scene3">
+  <div class="text">Teach him a lesson. Tap the chocolate. 👊🍫</div>
   <div class="grid" id="grid"></div>
+  <div id="hits" class="text">Hits: 0/5</div>
 </div>
 
 <!-- SCENE 4 -->
-<div id="scene4" class="scene">
-  <div class="rain"></div>
-  <div class="text big">Sometimes…<br>Even the proudest melt.</div>
+<div class="scene rain" id="scene4">
+  <div class="text">Sometimes…<br>Even the proudest melt.</div>
 </div>
 
 <!-- SCENE 5 -->
-<div id="scene5" class="scene">
-  <div class="walk">😎</div>
+<div class="scene" id="scene5">
+  <div class="big">😎</div>
   <div class="text">Swikar</div>
-  <div class="text fade">He doesn’t need chocolate to be sweet.</div>
+  <div class="text" id="dialogue5"></div>
+</div>
+
+<!-- SCENE 6 -->
+<div class="scene" id="scene6">
+  <div class="choco-wrapper">
+    <div id="dropCrown" class="crown">👑</div>
+    <div class="choco">🍫</div>
+  </div>
+  <div class="text">I step down.<br><br>The throne belongs to…<br><br><b>You.</b></div>
 </div>
 
 <!-- SCENE 7 -->
-<div id="scene7" class="scene">
-  <div id="meltChoco" class="choco">🍫</div>
-  <div class="text fade">Happy Chocolate Day…<br>My Queen.</div>
+<div class="scene" id="scene7" style="background:var(--bg-warm)">
+  <div class="big">❤️</div>
+  <div class="text">Happy Chocolate Day…<br>My Queen. 👑🍫</div>
 </div>
 
 <!-- SCENE 8 -->
-<div id="scene8" class="scene">
-  <div id="finalText" class="typing"></div>
-</div>
-
+<div class="scene" id="scene8" style="background:#f7b3c9; color:#4a1d2a">
+  <div class="text">
+    Happy Chocolate Day 🍫❤️<br>
+    To the most amazing,<br>
+    sweetest,<br>
+    adorable,<br>
+    cutest,<br>
+    my chocolate,<br>
+    my everything.<br><br>
+    Happy Chocolate Day, my love.
+  </div>
 </div>
 
 <script>
 let current = 0;
-const scenes = document.querySelectorAll('.scene');
+const scenes = document.querySelectorAll(".scene");
 
-function showScene(n) {
-  scenes.forEach(s => s.classList.remove('active'));
-  scenes[n].classList.add('active');
+/* HAPTIC */
+const buzz = (ms=15)=>navigator.vibrate&&navigator.vibrate(ms);
+
+/* Scene switching */
+function showScene(i){
+  scenes.forEach(s=>s.classList.remove("active"));
+  scenes[i].classList.add("active");
+  current=i;
 }
 
-document.body.addEventListener('click', () => {
-  if (current === 0) { current = 1; showScene(1); startDialogue(); }
-  else if (current === 1) { current = 3; showScene(3); startGame(); }
-  else if (current === 4) { current = 5; showScene(5); }
-});
+/* SCENE 0 */
+const entryLines=["Tap to enter…","If you dare. 😏🍫"];
+let ei=0;
+const entryEl=document.getElementById("entryText");
+entryEl.textContent=entryLines[0];
+setInterval(()=>{
+  ei=(ei+1)%entryLines.length;
+  entryEl.textContent=entryLines[ei];
+},1500);
 
-const lines = [
-  "Ohhh… so YOU must be her. 😏",
-  "I’ve heard a lot about you.",
-  "That Swikar guy?",
-  "He’s obsessed with you.",
-  "But me?",
-  "I’m sweeter. I’m adored.",
-  "The world melts for me. 🌍🍫"
+/* SCENE 1 dialogue */
+const s1=[
+"Ohhh… so YOU must be her. 😏",
+"I’ve heard a LOT about you.",
+"What was that guy’s name again…",
+"…Ahhh. Swikar. 😎",
+"That guy is OBSESSED with you.",
+"Gentle this… sweet that… amazing blah blah blah 🙄",
+"But let me make one thing VERY clear.",
+"I’m sweeter than you.",
+"I’m more loved than you.",
+"I’m adored by the ENTIRE WORLD. 🌍🍫",
+"People don’t choose chocolate.",
+"Chocolate chooses THEM."
 ];
+let i1=0;
 
-let idx = 0;
-function startDialogue() {
-  const el = document.getElementById('dialogue1');
-  el.textContent = '';
-  const interval = setInterval(() => {
-    if (idx < lines.length) {
-      el.textContent = lines[idx++];
-      el.classList.add('shake');
-      setTimeout(()=>el.classList.remove('shake'),1200);
-    } else clearInterval(interval);
-  }, 1400);
+/* Tap handler */
+document.body.onclick=()=>{
+  buzz();
+  if(current===0){ showScene(1); speak1(); }
+  else if(current===1) speak1();
+  else if(current===2) speak2();
+};
+
+/* Speak scene 1 */
+function speak1(){
+  if(i1>=s1.length){ showScene(2); return; }
+  const d=document.getElementById("dialogue1");
+  d.textContent=s1[i1];
+  d.classList.add("shake");
+  const ch=document.getElementById("choco1");
+  if(i1===0) ch.classList.add("smirk");
+  if(i1===5) ch.classList.add("eye-roll");
+  i1++;
 }
 
-let hits = 0;
-function startGame() {
-  const grid = document.getElementById('grid');
-  grid.innerHTML = '';
-  for (let i=0;i<9;i++) {
-    const h = document.createElement('div');
-    h.className = 'hole';
-    grid.appendChild(h);
-  }
-  pop();
+/* Scene 2 */
+const s2=[
+"And that Swikar guy?",
+"Pfft. Emotional. Dramatic.",
+"Acts tough but melts faster than me. 😌",
+"You deserve better.",
+"Like… ME.",
+"Anyway. I’m bored.",
+"Try to keep up. 😏"
+];
+let i2=0;
+function speak2(){
+  if(i2>=s2.length){ startGame(); return; }
+  document.getElementById("dialogue2").textContent=s2[i2++];
 }
 
-function pop() {
-  if (hits >= 5) {
-    current = 4;
-    showScene(4);
-    setTimeout(()=>{ current=5; showScene(5); }, 3000);
-    setTimeout(()=>{ current=7; showScene(7); melt(); }, 6000);
-    setTimeout(()=>{ current=8; showScene(8); typeFinal(); }, 9000);
-    return;
-  }
-  const holes = document.querySelectorAll('.hole');
-  holes.forEach(h=>h.textContent='');
-  const h = holes[Math.floor(Math.random()*9)];
-  h.textContent = '🍫';
-  h.onclick = () => {
-    hits++;
-    document.getElementById('hits').textContent = `Hits: ${hits}/5`;
-    h.classList.add('hit');
-    pop();
+/* GAME */
+let hits=0;
+const grid=document.getElementById("grid");
+for(let i=0;i<9;i++){
+  const h=document.createElement("div");
+  h.className="hole";
+  grid.appendChild(h);
+}
+function startGame(){
+  showScene(3);
+  spawn();
+}
+function spawn(){
+  if(hits>=5){ showScene(4); setTimeout(()=>showScene(5),2000); return;}
+  grid.querySelectorAll(".hole").forEach(h=>h.textContent="");
+  const hole=grid.children[Math.floor(Math.random()*9)];
+  hole.textContent="🍫";
+  hole.onclick=()=>{
+    hits++; buzz(30);
+    document.getElementById("hits").textContent=`Hits: ${hits}/5`;
+    spawn();
   };
+  setTimeout(()=>spawn(),1000-(hits*120));
 }
 
-function melt() {
-  document.getElementById('meltChoco').classList.add('melt');
+/* Scene 5 dialogue */
+const s5=[
+"I was wrong.",
+"I thought I was the sweetest thing in this world…",
+"But then I saw her.",
+"Her kindness.",
+"Her warmth.",
+"Her heart.",
+"She doesn’t need chocolate to be sweet. 🥹"
+];
+let i5=0;
+const d5=document.getElementById("dialogue5");
+const interval=setInterval(()=>{
+  if(i5>=s5.length){ clearInterval(interval); setTimeout(()=>showScene(6),2000); return;}
+  d5.textContent=s5[i5++];
+},2000);
+
+/* Crown drop */
+const crown=document.getElementById("dropCrown");
+setTimeout(()=>{ crown.style.animation="fall 1.2s ease forwards"; },200);
+
+/* Confetti */
+function confetti(){
+  const emojis=["❤️","🌹","✨","💖","🍫"];
+  const c=document.createElement("div");
+  c.className="confetti";
+  document.body.appendChild(c);
+  for(let i=0;i<60;i++){
+    const s=document.createElement("span");
+    s.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDelay=Math.random()+"s";
+    c.appendChild(s);
+  }
+  setTimeout(()=>c.remove(),3500);
 }
 
-const finalMsg = "Happy Chocolate Day 🍫❤️ To my sweetest, cutest, most precious love.";
-let t = 0;
-function typeFinal() {
-  const el = document.getElementById('finalText');
-  const timer = setInterval(()=>{
-    el.textContent += finalMsg[t++];
-    if (t >= finalMsg.length) clearInterval(timer);
-  }, 80);
-}
+setTimeout(()=>{ showScene(7); confetti(); },18000);
+setTimeout(()=>{ showScene(8); },22000);
 </script>
 </body>
 </html>
