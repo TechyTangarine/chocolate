@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Chocolate Day 🍫</title>
+
+<style>
+:root {
+  --choco-dark: #2b1a14;
+  --choco-mid: #4b2e24;
+  --gold: #d4af37;
+  --pink: #ffb6c1;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--choco-dark);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* GENERAL */
+.scene {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 24px;
+}
+
+.scene.active {
+  display: flex;
+}
+
+.text {
+  font-size: 1.6rem;
+  color: #fff;
+  line-height: 1.4;
+  margin-top: 16px;
+}
+
+.big {
+  font-size: 3.2rem;
+}
+
+.fade {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ENTRY */
+#scene0 {
+  background: radial-gradient(circle at top, #3b2318, var(--choco-dark));
+}
+
+.cocoa {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: float 8s linear infinite;
+}
+
+@keyframes float {
+  from { background-position: 0 0; }
+  to { background-position: 40px 80px; }
+}
+
+/* CHOCOLATE CHARACTER */
+.choco {
+  font-size: 5rem;
+  animation: bounce 1.2s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes bounce {
+  0% { transform: translateY(-200px) scale(0.8); }
+  60% { transform: translateY(20px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.crown {
+  font-size: 2.5rem;
+  position: absolute;
+  top: 18%;
+  animation: glow 1s ease-in-out;
+}
+
+@keyframes glow {
+  0% { opacity: 0; transform: scale(0.6); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* MOCK SHAKE */
+.shake {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  50% { transform: rotate(-2deg); }
+  75% { transform: rotate(1deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* WHACK GAME */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 90px);
+  grid-gap: 16px;
+  margin-top: 24px;
+}
+
+.hole {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #3a2218;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hit {
+  animation: hit 0.2s ease;
+}
+
+@keyframes hit {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.85); }
+  100% { transform: scale(1); }
+}
+
+/* DRAMA */
+#scene4 {
+  background: linear-gradient(#0f0f0f, #1a0f0a);
+}
+
+.rain {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 2px 18px;
+  animation: rain 0.5s linear infinite;
+}
+
+@keyframes rain {
+  from { background-position: 0 0; }
+  to { background-position: 0 18px; }
+}
+
+/* WALK-IN */
+.walk {
+  font-size: 4rem;
+  animation: walkIn 3s ease forwards;
+}
+
+@keyframes walkIn {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* MELT */
+.melt {
+  animation: melt 3s ease forwards;
+}
+
+@keyframes melt {
+  0% { transform: scale(1); }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+/* HEART CONFETTI */
+.confetti span {
+  position: absolute;
+  font-size: 1.5rem;
+  animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+  from { transform: translateY(-50px); opacity: 1; }
+  to { transform: translateY(120vh); opacity: 0; }
+}
+
+/* FINAL */
+#scene8 {
+  background: radial-gradient(circle, #ffccd5, #ff8fab);
+  color: #4b2e24;
+  overflow-y: auto;
+}
+
+.typing {
+  font-size: 2rem;
+  white-space: nowrap;
+  border-right: 2px solid;
+  animation: blink 0.8s step-end infinite;
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+
+<!-- SCENE 0 -->
+<div id="scene0" class="scene active">
+  <div class="cocoa"></div>
+  <div class="text fade">Tap to enter…<br>🍫</div>
+</div>
+
+<!-- SCENE 1 -->
+<div id="scene1" class="scene">
+  <div class="choco">🍫</div>
+  <div class="crown">👑</div>
+  <div id="dialogue1" class="text"></div>
+</div>
+
+<!-- SCENE 3 GAME -->
+<div id="scene3" class="scene">
+  <div class="text">Teach him a lesson.<br>Tap the chocolate 👊🍫</div>
+  <div id="hits" class="text">Hits: 0/5</div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- SCENE 4 -->
+<div id="scene4" class="scene">
+  <div class="rain"></div>
+  <div class="text big">Sometimes…<br>Even the proudest melt.</div>
+</div>
+
+<!-- SCENE 5 -->
+<div id="scene5" class="scene">
+  <div class="walk">😎</div>
+  <div class="text">Swikar</div>
+  <div class="text fade">He doesn’t need chocolate to be sweet.</div>
+</div>
+
+<!-- SCENE 7 -->
+<div id="scene7" class="scene">
+  <div id="meltChoco" class="choco">🍫</div>
+  <div class="text fade">Happy Chocolate Day…<br>My Queen.</div>
+</div>
+
+<!-- SCENE 8 -->
+<div id="scene8" class="scene">
+  <div id="finalText" class="typing"></div>
+</div>
+
+</div>
+
+<script>
+let current = 0;
+const scenes = document.querySelectorAll('.scene');
+
+function showScene(n) {
+  scenes.forEach(s => s.classList.remove('active'));
+  scenes[n].classList.add('active');
+}
+
+document.body.addEventListener('click', () => {
+  if (current === 0) { current = 1; showScene(1); startDialogue(); }
+  else if (current === 1) { current = 3; showScene(3); startGame(); }
+  else if (current === 4) { current = 5; showScene(5); }
+});
+
+const lines = [
+  "Ohhh… so YOU must be her. 😏",
+  "I’ve heard a lot about you.",
+  "That Swikar guy?",
+  "He’s obsessed with you.",
+  "But me?",
+  "I’m sweeter. I’m adored.",
+  "The world melts for me. 🌍🍫"
+];
+
+let idx = 0;
+function startDialogue() {
+  const el = document.getElementById('dialogue1');
+  el.textContent = '';
+  const interval = setInterval(() => {
+    if (idx < lines.length) {
+      el.textContent = lines[idx++];
+      el.classList.add('shake');
+      setTimeout(()=>el.classList.remove('shake'),300);
+    } else clearInterval(interval);
+  }, 1400);
+}
+
+let hits = 0;
+function startGame() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  for (let i=0;i<9;i++) {
+    const h = document.createElement('div');
+    h.className = 'hole';
+    grid.appendChild(h);
+  }
+  pop();
+}
+
+function pop() {
+  if (hits >= 5) {
+    current = 4;
+    showScene(4);
+    setTimeout(()=>{ current=5; showScene(5); }, 3000);
+    setTimeout(()=>{ current=7; showScene(7); melt(); }, 6000);
+    setTimeout(()=>{ current=8; showScene(8); typeFinal(); }, 9000);
+    return;
+  }
+  const holes = document.querySelectorAll('.hole');
+  holes.forEach(h=>h.textContent='');
+  const h = holes[Math.floor(Math.random()*9)];
+  h.textContent = '🍫';
+  h.onclick = () => {
+    hits++;
+    document.getElementById('hits').textContent = `Hits: ${hits}/5`;
+    h.classList.add('hit');
+    pop();
+  };
+}
+
+function melt() {
+  document.getElementById('meltChoco').classList.add('melt');
+}
+
+const finalMsg = "Happy Chocolate Day 🍫❤️ To my sweetest, cutest, most precious love.";
+let t = 0;
+function typeFinal() {
+  const el = document.getElementById('finalText');
+  const timer = setInterval(()=>{
+    el.textContent += finalMsg[t++];
+    if (t >= finalMsg.length) clearInterval(timer);
+  }, 80);
+}
+</script>
+</body>
+</html>
