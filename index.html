@@ -424,12 +424,12 @@
                          { text: "I step down.", onComplete: () => {}},
                          { text: "The throne belongs to...", onComplete: () => {}},
                          { text: "The most adorable, loving, beautiful soul. YOU ❤️", onComplete: () => {}},
-                         { text: "You. And only you ❤️🫡", onComplete: () => setTimeout(() => showScene(7), 2000) }
+                         { text: "YOU ❤️ ❤️ ❤️ 🫡", onComplete: () => setTimeout(() => showScene(7), 2000) }
                     ]);
                     break;
                 case 7: // Melt
                     el('chocolate-melt-container').classList.add('is-melting');
-                    typeWriter(el('dialogue-7'), "Happy Chocolate Day…<br>My Queen. 👑🍫", 70, () => {
+                    typeWriter(el('dialogue-7'), "Happy Chocolate Day… Queen. 👑🍫", 70, () => {
                         setTimeout(() => showScene(8), 2500);
                     });
                     break;
