@@ -307,7 +307,7 @@ function startDialogue() {
     if (idx < lines.length) {
       el.textContent = lines[idx++];
       el.classList.add('shake');
-      setTimeout(()=>el.classList.remove('shake'),800);
+      setTimeout(()=>el.classList.remove('shake'),1200);
     } else clearInterval(interval);
   }, 1400);
 }
